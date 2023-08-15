@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux/es/exports';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Login from './pages/login'
 import Register from './pages/register';
 import { Cookies } from 'react-cookie';
@@ -7,21 +7,37 @@ import RouteGuard from './route_guard';
 import { useEffect, useMemo, useState } from 'react';
 import Home from './pages/home';
 import { loginWithTokenService } from './services/auth.service';
+import Header from './components/header';
+import Dashboard from './pages/dashboard/dashboard';
+import Sidebar from './components/sidebar';
+import MissList from './pages/dashboard/miss-list';
+import CategoryList from './pages/dashboard/categories';
+import { getCategoriesServices } from './services/category.service';
 
 const Router = () => {
   const cookie = new Cookies()
-  const navigate = useNavigate()
   const user = useSelector(state => state.user)
   const token = cookie.get('token')
-  const isUserLogin = useMemo(() => !!user?.isLogin, [user?.isLogin]);
-  const [loading, setLoading] = useState(false);
+  const { pathname } = useLocation();
+  const isUserLogin = useMemo(() => !!user.isLogin, [user.isLogin]);
+  const role = useMemo(() => user.role, [user.role])
+  const [loading, setLoading] = useState(true);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(window.matchMedia('(max-width: 1280px)').matches ? false : true);
 
   useEffect(() => {
     if (token) {
-      setLoading(true)
-      loginWithTokenService(navigate,() => setLoading(false))
+      loginWithTokenService(token,async () => {
+        getCategoriesServices();
+        setLoading(false)
+      })
+    } else {
+      setLoading(false)
     }
   }, [])
+
+  const handleCollapse = () => {
+    setIsSideBarOpen((preState) => !preState);
+  };
 
   if (loading) {
     return (
@@ -33,13 +49,19 @@ const Router = () => {
 
   return (
     <div className="flex">
-      <div className="h-screen w-full flex-1 overflow-y-scroll">
+      {isUserLogin && pathname.startsWith('/dashboard') && <Sidebar
+        handleCollapse={handleCollapse}
+        isSideBarOpen={isSideBarOpen}
+      />}
+      <div className="h-screen w-full flex-1 overflow-y-scroll scrollbar-hide">
+        {isUserLogin && window.matchMedia('(max-width: 1280px)').matches && pathname.startsWith('/dashboard') && <Header handleCollapse={handleCollapse} />}
         <Routes>
           <Route
             path="/login"
             element={
               <RouteGuard
                 isUserLogin={isUserLogin}
+                role={role}
               >
                 <Login />
               </RouteGuard>
@@ -50,6 +72,7 @@ const Router = () => {
             element={
               <RouteGuard
                 isUserLogin={isUserLogin}
+                role={role}
               >
                 <Register />
               </RouteGuard>
@@ -60,8 +83,42 @@ const Router = () => {
             element={
               <RouteGuard
                 isUserLogin={isUserLogin}
+                role={role}
               >
                 <Home />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <Dashboard />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/dashboard/misses"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <MissList />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/dashboard/categories"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <CategoryList />
               </RouteGuard>
             }
           />

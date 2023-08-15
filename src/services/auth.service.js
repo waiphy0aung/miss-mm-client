@@ -53,10 +53,10 @@ export const registerService = async (inputs,navigate, callback) => {
   }
 }
 
-export const loginWithTokenService = async (navigate,callback) => {
+export const loginWithTokenService = async (token,callback) => {
   const fetchResponse = await fetchUtilities.get({
     endpoint: '/auth/login',
-    headers: {xToken: cookie.get('token')}
+    headers: {xToken: token}
   })
   const {data,status} = fetchResponse;
   switch(status){
@@ -64,13 +64,20 @@ export const loginWithTokenService = async (navigate,callback) => {
       saveUserDataAction(data.user);
       cookie.set('token',data.token);
       cookie.set('role',data.role);
-      callback();
-      navigate('/');
+      callback(undefined);
       break;
     case 'error':
       toast.error(data);
-      callback()
+      cookie.remove('token')
+      callback(undefined)
       break;
     default: break;
   }
+}
+
+export const logoutService = async () => {
+  cookie.remove('token');
+  cookie.remove('role');
+  cookie.remove('user');
+  saveUserDataAction({});
 }

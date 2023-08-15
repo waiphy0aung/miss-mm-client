@@ -1,11 +1,15 @@
 import { combineReducers, legacy_createStore as createStore } from 'redux';
 import mainReducer from './main';
 import userReducer from './user.store';
+import missReducer from './miss.store';
+import categoryReducer from './category.store';
 
 const store = createStore(
 	combineReducers({
 		main: mainReducer,
-    user: userReducer
+    user: userReducer,
+    misses: missReducer,
+    categories: categoryReducer
 	}),
 );
 
