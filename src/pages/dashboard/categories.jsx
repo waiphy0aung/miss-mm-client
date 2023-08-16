@@ -3,6 +3,7 @@ import ButtonCommon from "../../commons/button.common";
 import InputCommon from "../../commons/input.common";
 import { useEffect, useState } from "react";
 import { addCategoryService, deleteCategoryService, updateCategoryService } from "../../services/category.service";
+import ConfirmModal from "../../components/confirm_modal";
 
 const CategoryList = () => {
   let categories = useSelector(state => state.categories);
@@ -12,7 +13,8 @@ const CategoryList = () => {
   const [errors, setErrors] = useState({
     name: undefined
   })
-  const [editData,setEditData] = useState(null);
+  const [deleteId,setDeleteId] = useState(null);
+  const [editData, setEditData] = useState(null);
 
   const addCategory = () => {
     setLoading(true)
@@ -25,15 +27,22 @@ const CategoryList = () => {
 
   const updateCategory = () => {
     setLoading(true)
-    updateCategoryService(editData._id,editData,(err) => {
-      if(err) setErrors(err);
+    updateCategoryService(editData._id, editData, (err) => {
+      if (err) setErrors(err);
       setEditData(null)
       setLoading(false)
     })
   }
 
-  const deleteCategory = (id) => {
-    deleteCategoryService(id);
+  const showDeleteModal = (id) => {
+    setDeleteId(id);
+    setShowModal(true);
+  }
+
+  const deleteCategory = () => {
+    deleteCategoryService(deleteId,() => {
+      setShowModal(prev => !prev)
+    });
   }
 
   return (
@@ -49,7 +58,7 @@ const CategoryList = () => {
           <InputCommon
             id="addCategory"
             value={editData ? editData.name : name}
-            onChange={e => editData ? setEditData(prev => ({...prev,name: e.target.value})) : setName(e.target.value)}
+            onChange={e => editData ? setEditData(prev => ({ ...prev, name: e.target.value })) : setName(e.target.value)}
             placeholder={editData ? 'Update category' : 'Add new category'}
             error={errors.name}
             onClick={() => setErrors({ name: undefined })}
@@ -78,7 +87,7 @@ const CategoryList = () => {
                     <td className="font-semibold">{category.name}</td>
                     <td className="flex space-x-3">
                       <i className="fa-solid fa-edit cursor-pointer" onClick={() => setEditData(category)}></i>
-                      <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => deleteCategory(category._id)}></i>
+                      <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => showDeleteModal(category._id)}></i>
                     </td>
                   </tr>
                 )
@@ -89,6 +98,13 @@ const CategoryList = () => {
         </div>
 
       </div>
+      <ConfirmModal
+        text="Are you sure you want to delete?"
+        confirmBtnText="Delete"
+        showModal={showModal}
+        setShowModal={() => setShowModal((prev) => !prev)}
+        handleConfirm={() => deleteCategory()}
+      />
     </div>
   )
 }

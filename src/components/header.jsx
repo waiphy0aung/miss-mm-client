@@ -10,7 +10,7 @@ const Header = ({ handleCollapse }) => {
         </div>
       </div>
       <div className="navbar-center">
-        <img src="./logo_long.png" className="h-[70px]" />
+        <img src="/logo_long.png" className="h-[70px]" />
       </div>
 
     </div>

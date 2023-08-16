@@ -1,18 +1,19 @@
 import { toast } from "react-toastify";
-import { addCategoryDataAction, deleteCategoryAction, saveCategoryDataAction, updateCategoryAction } from "../actions/category.action";
+import { addMissAction, deleteMissAction, saveMissDataAction, updateMissAction } from "../actions/miss.action";
 import fetchUtilities from "../utilities/fetch.utility"
 import { Cookies } from "react-cookie"
-const cookie = new Cookies();
+const cookie = new Cookies;
 
-export const getCategoriesServices = async () => {
+export const getMissesService = async () => {
   const fetchResponse = await fetchUtilities.get({
-    endpoint: '/categories/',
+    endpoint: '/misses/',
     headers: { xToken: cookie.get('token') }
   })
+
   const { status, data } = fetchResponse;
   switch (status) {
     case 'success':
-      saveCategoryDataAction(data);
+      saveMissDataAction(data);
       break;
     case 'error':
       toast.error(data);
@@ -22,37 +23,37 @@ export const getCategoriesServices = async () => {
   }
 }
 
-export const addCategoryService = async (inputs, callback) => {
+export const createMissService = async (inputs,callback) => {
   const fetchResponse = await fetchUtilities.post({
-    endpoint: '/categories/create',
+    endpoint: '/misses/create',
     data: inputs,
-    headers: { xToken: cookie.get('token') }
+    headers: { xToken: cookie.get('token') },
+    isFormData: true
   })
 
   const { status, data } = fetchResponse;
   switch (status) {
     case 'success':
-      addCategoryDataAction(data);
-      toast.success('Added successfully!');
-      callback(undefined)
+      addMissAction(data);
+      toast.success('Created successfully');
+      callback(undefined);
       break;
     case 'fail':
       callback(data);
       break;
     case 'error':
       toast.error(data);
-      callback(undefined);
+      callback(undefined)
       break;
     default:
-      callback(undefined);
+      callback(undefined)
       break;
   }
 }
 
-export const updateCategoryService = async (id, inputs, callback) => {
-  console.log(id,inputs)
+export const updateCategoryService = async (inputs,callback) => {
   const fetchResponse = await fetchUtilities.put({
-    endpoint: '/categories/update/' + id,
+    endpoint: '/misses/update/'+inputs._id,
     data: inputs,
     headers: { xToken: cookie.get('token') }
   })
@@ -60,35 +61,35 @@ export const updateCategoryService = async (id, inputs, callback) => {
   const { status, data } = fetchResponse;
   switch (status) {
     case 'success':
-      updateCategoryAction(data);
-      toast.success('Updated successfully!');
-      callback(undefined)
+      updateMissAction(data);
+      toast.success('Updated successfully');
+      callback(undefined);
       break;
     case 'fail':
       callback(data);
       break;
     case 'error':
       toast.error(data);
-      callback(undefined);
+      callback(undefined)
       break;
     default:
-      callback(undefined);
+      callback(undefined)
       break;
   }
 }
 
 export const deleteCategoryService = async (id,callback) => {
   const fetchResponse = await fetchUtilities.delete({
-    endpoint: '/categories/delete/' + id,
+    endpoint: '/misses/delete/'+id,
     headers: { xToken: cookie.get('token') }
   })
 
   const { status, data } = fetchResponse;
   switch (status) {
     case 'success':
-      deleteCategoryAction(id);
-      toast.success('Deleted successfully!');
-      callback(undefined)
+      deleteMissAction(data);
+      toast.success('Deleted successfully');
+      callback(undefined);
       break;
     case 'error':
       toast.error(data);

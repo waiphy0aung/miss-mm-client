@@ -13,6 +13,8 @@ import Sidebar from './components/sidebar';
 import MissList from './pages/dashboard/miss-list';
 import CategoryList from './pages/dashboard/categories';
 import { getCategoriesServices } from './services/category.service';
+import { getMissesService } from './services/miss.services';
+import CreateMiss from './pages/dashboard/miss-create';
 
 const Router = () => {
   const cookie = new Cookies()
@@ -26,8 +28,11 @@ const Router = () => {
 
   useEffect(() => {
     if (token) {
-      loginWithTokenService(token,async () => {
-        getCategoriesServices();
+      loginWithTokenService(token, async () => {
+        if (cookie.get('role') === 'admin') {
+          getMissesService();
+          getCategoriesServices();
+        }
         setLoading(false)
       })
     } else {
@@ -108,6 +113,17 @@ const Router = () => {
                 role={role}
               >
                 <MissList />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/dashboard/misses/create"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <CreateMiss />
               </RouteGuard>
             }
           />

@@ -11,6 +11,7 @@ const SidebarItem = ({title,url,icon, handleCollapse}) => {
   };
 
   const isActive = useMemo(() => {
+    if (url === '/dashboard/misses' && location.pathname.includes('create')) return true;
 		return location.pathname === url;
 	}, [location.pathname, url]);
 

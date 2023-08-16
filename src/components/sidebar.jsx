@@ -16,6 +16,7 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
   const calculateSideBarItemActive = useMemo(() => {
     let topPx = 24;
     for (const page of pages) {
+      if (page === '/dashboard/misses' && location.pathname.includes('create')) break;
       if (location.pathname === page) break;
       else topPx += 52;
     }
