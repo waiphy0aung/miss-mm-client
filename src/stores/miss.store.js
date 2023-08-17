@@ -1,20 +1,24 @@
 const missState = [];
 
 const missReducer = (state = missState, { type, data }) => {
-	switch (type) {
-		case 'SaveMissDataAction':
-			return data;
+  let tempData = [...state];
+  switch (type) {
+    case 'SaveMissDataAction':
+      return data;
     case 'AddMissAction':
-      return [...state,data]
+      return [...state, data]
     case 'UpdateMissAction':
-      let tempData = [...state];
       tempData[tempData.findIndex(v => v._id === data._id)] = data;
       return tempData;
     case 'DeleteMissAction':
       return state.filter(v => v._id !== data);
-		default:
-			return state;
-	}
+    case 'VoteMissAction':
+      const index = tempData.findIndex(v => v._id === data._id);
+      tempData[index].isVote[data.categoryName] = data.value;
+      return tempData;
+    default:
+      return state;
+  }
 };
 
 export default missReducer;

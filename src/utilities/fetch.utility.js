@@ -1,5 +1,5 @@
-const url = "https://miss-mm.onrender.com";
-// export const url = "http://localhost:3002"
+// const url = "https://miss-mm.onrender.com";
+export const url = "http://localhost:3002"
 
 async function fetchPostRequest({
   endpoint,
@@ -24,8 +24,13 @@ async function fetchPutRequest({
   endpoint,
   headers,
   data,
+  isFormData
 }) {
-  const fetchData = await fetch(`${url}${endpoint}`, {
+  const fetchData = isFormData ? await fetch(`${url}${endpoint}`, {
+    method: 'PUT',
+    headers: { 'Authorization': 'Bearer ' + headers?.xToken },
+    body: data,
+  }) : await fetch(`${url}${endpoint}`, {
     method: 'PUT',
     headers: JSON.parse(JSON.stringify({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + headers?.xToken })),
     body: JSON.stringify(data),

@@ -1,10 +1,26 @@
 import { useSelector } from "react-redux";
 import ButtonCommon from "../../commons/button.common";
 import { useNavigate } from "react-router-dom";
+import MissCard from "../../components/miss_card";
+import ConfirmModal from "../../components/confirm_modal";
+import { useState } from "react";
+import { deleteMissService } from "../../services/miss.services";
 
 const MissList = () => {
   const navigate = useNavigate()
   const misses = useSelector(state => state.misses);
+  const [showDeleteModal,setShowDeleteModal] = useState(false);
+  const [deleteId,setDeleteId] = useState(null);
+  const handleDeleteMiss = () => {
+    deleteMissService(deleteId,() => {
+      setShowDeleteModal(false)
+    })
+  }
+
+  const handleShowDeleteModal = (id) => {
+    setDeleteId(id);
+    setShowDeleteModal(true);
+  }
 
   return (
     <div className="h-full">
@@ -21,25 +37,19 @@ const MissList = () => {
         <div className="grid sm:grid-cols-1 xl:grid-cols-3 gap-3">
           {misses.map(miss => {
             return (
-              <div className="card lg:card-side bg-base-100 shadow-xl flex h-[300px]" key={miss._id}>
-                <figure><div className={`h-full w-[200px] bg-center bg-cover`} style={{backgroundImage: `url(${miss.image})`}}></div></figure>
-                <div className="card-body text-primary bg-secondary">
-                  <h2 className="card-title">{miss.name}</h2>
-                  <p>Age: <span className="text-black">{miss.age}</span></p>
-                  <p>Height: <span className="text-black">{miss.height} cm</span></p>
-                  <p>Weight: <span className="text-black">{miss.weight} kg</span></p>
-                  <p>Address: <span className="text-black">{miss.location}</span></p>
-                  <p>Hobby: <span className="text-black">{miss.hobby.join(", ")}</span></p>
-                  <div className="card-actions justify-end">
-                    <button className="btn btn-primary">Vote</button>
-                  </div>
-                </div>
-              </div>
+              <MissCard key={miss._id} miss={miss} isDashboard={true} handleShowDeleteModal={handleShowDeleteModal} />
             )
           })}
         </div>
 
       </div>
+      <ConfirmModal
+        text="Are you sure you want to delete?"
+        confirmBtnText="Delete"
+        showModal={showDeleteModal}
+        setShowModal={() => setShowDeleteModal((prev) => !prev)}
+        handleConfirm={() => handleDeleteMiss()}
+      />
     </div>
   )
 }

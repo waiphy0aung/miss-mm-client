@@ -1,13 +1,17 @@
 import ButtonCommon from "../../commons/button.common";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import InputCommon from "../../commons/input.common";
-import { useState } from "react";
-import { createMissService } from "../../services/miss.services";
+import { useEffect, useState } from "react";
+import { createMissService, getMissService } from "../../services/miss.services";
 import { toast } from "react-toastify";
 
-const CreateMiss = () => {
+const UpdateMiss = () => {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [pageLoading, setPageLoading] = useState(true)
+  const id = searchParams.get('id');
   const [miss, setMiss] = useState({
+    _id: '',
     name: '',
     age: '',
     height: '',
@@ -18,7 +22,20 @@ const CreateMiss = () => {
     hips: '',
     hobby: []
   })
-  const [loading,setLoading] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      getMissService(id, (err, data) => {
+        if (!err) {
+          setMiss(data)
+          setPreview(data.image);
+        }
+        setPageLoading(false)
+      })
+    }
+  }, [])
+
+  const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [newHobby, setNewHobby] = useState('');
@@ -96,17 +113,25 @@ const CreateMiss = () => {
 
   }
 
+  if (pageLoading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
   return (
     <div className="h-full">
       <div className="mb-5 py-5 pr-4">
         <div className="mb-5 flex items-center justify-between gap-x-4">
           <div className="flex items-center space-x-3 lg:w-2/3 xl:w-1/2 2xl:w-1/3">
-            <p className="text-2xl font-bold text-primary">Create New Miss</p>
+            <p className="text-2xl font-bold text-primary">Edit Miss</p>
           </div>
         </div>
 
         <div className="flex flex-col xl:flex-row space-x-5 justify-center mt-10">
-          {preview && image ? (
+          {preview ? (
             <label htmlFor="profile" className="h-[500px] w-[300px] rounded-lg cursor-pointer bg-center bg-cover" style={{ backgroundImage: `url(${preview})` }}>
               <input type="file" className="hidden" id="profile" onChange={handleChange} />
             </label>
@@ -231,7 +256,7 @@ const CreateMiss = () => {
               </div>
             </div>
             <div className="">
-              <ButtonCommon onClick={handleSubmit} disabled={loading}>Create {loading && <span className="loading loading-spinner loading-xs"></span>}</ButtonCommon>
+              <ButtonCommon onClick={handleSubmit} disabled={loading}>Update {loading && <span className="loading loading-spinner loading-xs"></span>}</ButtonCommon>
             </div>
           </div>
         </div>
@@ -241,4 +266,4 @@ const CreateMiss = () => {
   )
 }
 
-export default CreateMiss;
+export default UpdateMiss;

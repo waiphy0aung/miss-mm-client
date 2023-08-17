@@ -15,6 +15,7 @@ import CategoryList from './pages/dashboard/categories';
 import { getCategoriesServices } from './services/category.service';
 import { getMissesService } from './services/miss.services';
 import CreateMiss from './pages/dashboard/miss-create';
+import UpdateMiss from './pages/dashboard/miss-update';
 
 const Router = () => {
   const cookie = new Cookies()
@@ -124,6 +125,17 @@ const Router = () => {
                 role={role}
               >
                 <CreateMiss />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/dashboard/misses/update"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <UpdateMiss />
               </RouteGuard>
             }
           />

@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { addMissAction, deleteMissAction, saveMissDataAction, updateMissAction } from "../actions/miss.action";
+import { addMissAction, deleteMissAction, saveMissDataAction, updateMissAction, voteMissAction } from "../actions/miss.action";
 import fetchUtilities from "../utilities/fetch.utility"
 import { Cookies } from "react-cookie"
 const cookie = new Cookies;
@@ -23,7 +23,27 @@ export const getMissesService = async () => {
   }
 }
 
-export const createMissService = async (inputs,callback) => {
+export const getMissService = async (id,callback) => {
+  const fetchResponse = await fetchUtilities.get({
+    endpoint: '/misses/'+id,
+    headers: { xToken: cookie.get('token') }
+  })
+
+  const { status, data } = fetchResponse;
+  switch (status) {
+    case 'success':
+      callback(undefined,data);
+      break;
+    case 'error':
+      toast.error(data);
+      callback(undefined)
+      break;
+    default:
+      break;
+  }
+} 
+
+export const createMissService = async (inputs, callback) => {
   const fetchResponse = await fetchUtilities.post({
     endpoint: '/misses/create',
     data: inputs,
@@ -51,9 +71,9 @@ export const createMissService = async (inputs,callback) => {
   }
 }
 
-export const updateCategoryService = async (inputs,callback) => {
+export const updateMissService = async (inputs, callback) => {
   const fetchResponse = await fetchUtilities.put({
-    endpoint: '/misses/update/'+inputs._id,
+    endpoint: '/misses/update/' + inputs._id,
     data: inputs,
     headers: { xToken: cookie.get('token') }
   })
@@ -78,9 +98,9 @@ export const updateCategoryService = async (inputs,callback) => {
   }
 }
 
-export const deleteCategoryService = async (id,callback) => {
+export const deleteMissService = async (id, callback) => {
   const fetchResponse = await fetchUtilities.delete({
-    endpoint: '/misses/delete/'+id,
+    endpoint: '/misses/delete/' + id,
     headers: { xToken: cookie.get('token') }
   })
 
@@ -100,3 +120,25 @@ export const deleteCategoryService = async (id,callback) => {
       break;
   }
 }
+
+export const voteMissService = async (missId, categoryId, categoryName, callback) => {
+  const fetchResponse = await fetchUtilities.post({
+    endpoint: `/vote?missId=${missId}&categoryId=${categoryId}`,
+    headers: { xToken: cookie.get('token') }
+  })
+  const { status, data } = fetchResponse;
+  switch (status) {
+    case 'success':
+      voteMissAction({ _id: missId, value: data ? false : true, categoryName: categoryName })
+      callback(undefined);
+      break;
+    case 'error':
+      toast.error(data)
+      callback(undefined)
+      break;
+    default:
+      callback(undefined);
+      break;
+  }
+}
+
