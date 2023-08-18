@@ -2,7 +2,7 @@ import ButtonCommon from "../../commons/button.common";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import InputCommon from "../../commons/input.common";
 import { useEffect, useState } from "react";
-import { createMissService, getMissService } from "../../services/miss.services";
+import { createMissService, getMissService, updateMissService } from "../../services/miss.services";
 import { toast } from "react-toastify";
 
 const UpdateMiss = () => {
@@ -93,9 +93,11 @@ const UpdateMiss = () => {
     setLoading(true)
     const formData = new FormData();
     formData.append('data', JSON.stringify(miss))
-    formData.append('image', image);
+    if (image) {
+      formData.append('image', image);
+    }
 
-    createMissService(formData, (err) => {
+    updateMissService(miss._id, formData, (err) => {
       if (err) setErrors(err);
       else setMiss({
         name: '',
@@ -108,6 +110,9 @@ const UpdateMiss = () => {
         hips: '',
         hobby: []
       })
+      setImage(null)
+      setPreview(null)
+      navigate('/dashboard/misses')
       setLoading(false)
     })
 
@@ -242,20 +247,24 @@ const UpdateMiss = () => {
                   <ButtonCommon onClick={() => addNewHobby()}>Add</ButtonCommon>
                 </div>
               </div>
-              <div className="">
-                <ul className="menu bg-base-200 w-56 rounded-box mb-3">
-                  {
-                    miss.hobby.map(h => {
-                      return (<li className="flex flex-row justify-between items-center">
-                        <p>{h}</p>
-                        <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => deleteHobby(h)}></i>
-                      </li>)
-                    })
-                  }
-                </ul>
-              </div>
+              {
+                miss.hobby.length > 0 && (
+                  <div className="">
+                    <ul className="menu bg-base-200 w-56 rounded-box">
+                      {
+                        miss.hobby.map((h, i) => {
+                          return (<li className="flex flex-row justify-between items-center" key={i}>
+                            <p>{h}</p>
+                            <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => deleteHobby(h)}></i>
+                          </li>)
+                        })
+                      }
+                    </ul>
+                  </div>
+                )
+              }
             </div>
-            <div className="">
+            <div className="mt-3">
               <ButtonCommon onClick={handleSubmit} disabled={loading}>Update {loading && <span className="loading loading-spinner loading-xs"></span>}</ButtonCommon>
             </div>
           </div>

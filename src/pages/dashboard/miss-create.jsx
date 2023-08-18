@@ -18,7 +18,7 @@ const CreateMiss = () => {
     hips: '',
     hobby: []
   })
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [newHobby, setNewHobby] = useState('');
@@ -91,6 +91,8 @@ const CreateMiss = () => {
         hips: '',
         hobby: []
       })
+      setPreview(null);
+      setImage(null)
       setLoading(false)
     })
 
@@ -217,20 +219,24 @@ const CreateMiss = () => {
                   <ButtonCommon onClick={() => addNewHobby()}>Add</ButtonCommon>
                 </div>
               </div>
-              <div className="">
-                <ul className="menu bg-base-200 w-56 rounded-box mb-3">
-                  {
-                    miss.hobby.map(h => {
-                      return (<li className="flex flex-row justify-between items-center">
-                        <p>{h}</p>
-                        <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => deleteHobby(h)}></i>
-                      </li>)
-                    })
-                  }
-                </ul>
-              </div>
+              {
+                miss.hobby.length > 0 && (
+                  <div className="">
+                    <ul className="menu bg-base-200 w-56 rounded-box">
+                      {
+                        miss.hobby.map((h, i) => {
+                          return (<li className="flex flex-row justify-between items-center" key={i}>
+                            <p>{h}</p>
+                            <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => deleteHobby(h)}></i>
+                          </li>)
+                        })
+                      }
+                    </ul>
+                  </div>
+                )
+              }
             </div>
-            <div className="">
+            <div className="mt-3">
               <ButtonCommon onClick={handleSubmit} disabled={loading}>Create {loading && <span className="loading loading-spinner loading-xs"></span>}</ButtonCommon>
             </div>
           </div>

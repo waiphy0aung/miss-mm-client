@@ -71,11 +71,12 @@ export const createMissService = async (inputs, callback) => {
   }
 }
 
-export const updateMissService = async (inputs, callback) => {
+export const updateMissService = async (id,inputs, callback) => {
   const fetchResponse = await fetchUtilities.put({
-    endpoint: '/misses/update/' + inputs._id,
+    endpoint: '/misses/update/' + id,
     data: inputs,
-    headers: { xToken: cookie.get('token') }
+    headers: { xToken: cookie.get('token') },
+    isFormData: true
   })
 
   const { status, data } = fetchResponse;

@@ -9,6 +9,7 @@ const missReducer = (state = missState, { type, data }) => {
       return [...state, data]
     case 'UpdateMissAction':
       tempData[tempData.findIndex(v => v._id === data._id)] = data;
+      console.log("tempData ===>",tempData)
       return tempData;
     case 'DeleteMissAction':
       return state.filter(v => v._id !== data);

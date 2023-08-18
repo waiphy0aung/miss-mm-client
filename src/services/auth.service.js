@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { saveUserDataAction } from "../actions/user.action";
 import { Cookies } from "react-cookie";
-import fetchUtilities from "../utilities/fetch.utility";
+import fetchUtilities, { url } from "../utilities/fetch.utility";
 const cookie = new Cookies();
 
 export const loginService = async (inputs,navigate, callback) => {
@@ -40,7 +40,8 @@ export const registerService = async (inputs,navigate, callback) => {
     case 'success':
       toast.success("Sign up success!")
       callback(undefined)
-      navigate('/login')
+      window.location.reload()
+      // navigate('/login')
       break;
     case 'fail':
       callback(data)
