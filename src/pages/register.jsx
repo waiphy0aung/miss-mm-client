@@ -100,7 +100,7 @@ const Register = () => {
           </div>
           <div className="flex items-center justify-center">
             <ButtonCommon
-              disabled={isRegisterDisable}
+              disabled={isRegisterDisable || loading}
               onClick={handleRegisterForm}
             >
               Register {loading && <span className="loading loading-spinner loading-xs"></span>}

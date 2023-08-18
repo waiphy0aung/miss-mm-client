@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { saveUserDataAction } from "../actions/user.action";
 import { Cookies } from "react-cookie";
-import fetchUtilities, { url } from "../utilities/fetch.utility";
+import fetchUtilities from "../utilities/fetch.utility";
 const cookie = new Cookies();
 
 export const loginService = async (inputs,navigate, callback) => {

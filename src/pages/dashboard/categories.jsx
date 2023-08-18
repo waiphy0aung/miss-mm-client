@@ -54,7 +54,7 @@ const CategoryList = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-x-3 xl:w-1/3 mb-3">
+        <div className="flex items-start gap-x-3 xl:w-1/3 mb-3">
           <InputCommon
             id="addCategory"
             value={editData ? editData.name : name}
@@ -64,7 +64,7 @@ const CategoryList = () => {
             onClick={() => setErrors({ name: undefined })}
           />
           <div className="flex items-center justify-center">
-            <ButtonCommon onClick={() => editData ? updateCategory() : addCategory()}>
+            <ButtonCommon onClick={() => editData ? updateCategory() : addCategory()} disabled={loading}>
               {editData ? 'Update Category' : 'Add Category'} {loading && <span className="loading loading-spinner loading-xs"></span>}
             </ButtonCommon>
           </div>

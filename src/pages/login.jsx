@@ -70,7 +70,7 @@ const Login = () => {
 
           <div className="flex items-center justify-center">
             <ButtonCommon
-              disabled={isLoginDisable}
+              disabled={isLoginDisable || loading}
               onClick={handleLoginForm}
             >
               Log In {loading && <span className="loading loading-spinner loading-xs"></span>}

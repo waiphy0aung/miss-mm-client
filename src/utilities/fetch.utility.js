@@ -1,5 +1,5 @@
-// const url = "https://miss-mm.onrender.com";
-export const url = "http://localhost:3002"
+const fetchUrl = "https://miss-mm.onrender.com";
+// export const fetchUrl = "http://localhost:3002"
 
 async function fetchPostRequest({
   endpoint,
@@ -7,16 +7,15 @@ async function fetchPostRequest({
   data,
   isFormData
 }) {
-  const fetchData = isFormData ? await fetch(`${url}${endpoint}`, {
+  const fetchData = isFormData ? await fetch(`${fetchUrl}${endpoint}`, {
     method: 'POST',
     headers: { 'Authorization': 'Bearer ' + headers?.xToken },
     body: data,
-  }) : await fetch(`${url}${endpoint}`, {
+  }) : await fetch(`${fetchUrl}${endpoint}`, {
     method: 'POST',
     headers: JSON.parse(JSON.stringify({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + headers?.xToken })),
     body: JSON.stringify(data),
   });
-  console.log(fetchData)
   return await fetchData.json();
 }
 
@@ -26,11 +25,11 @@ async function fetchPutRequest({
   data,
   isFormData
 }) {
-  const fetchData = isFormData ? await fetch(`${url}${endpoint}`, {
+  const fetchData = isFormData ? await fetch(`${fetchUrl}${endpoint}`, {
     method: 'PUT',
     headers: { 'Authorization': 'Bearer ' + headers?.xToken },
     body: data,
-  }) : await fetch(`${url}${endpoint}`, {
+  }) : await fetch(`${fetchUrl}${endpoint}`, {
     method: 'PUT',
     headers: JSON.parse(JSON.stringify({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + headers?.xToken })),
     body: JSON.stringify(data),
@@ -42,7 +41,7 @@ async function fetchDeleteRequest({
   endpoint,
   headers,
 }) {
-  const fetchData = await fetch(`${url}${endpoint}`, {
+  const fetchData = await fetch(`${fetchUrl}${endpoint}`, {
     method: 'Delete',
     headers: JSON.parse(JSON.stringify({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + headers?.xToken })),
   });
@@ -53,7 +52,7 @@ async function fetchGetRequest({
   endpoint,
   headers,
 }) {
-  const fetchData = await fetch(`${url}${endpoint}`, {
+  const fetchData = await fetch(`${fetchUrl}${endpoint}`, {
     method: 'GET',
     headers: JSON.parse(JSON.stringify({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + headers?.xToken })),
   });

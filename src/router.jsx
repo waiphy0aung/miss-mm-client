@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux/es/exports';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from './pages/login'
 import Register from './pages/register';
 import { Cookies } from 'react-cookie';
@@ -7,7 +7,7 @@ import RouteGuard from './route_guard';
 import { useEffect, useMemo, useState } from 'react';
 import Home from './pages/home';
 import { loginWithTokenService } from './services/auth.service';
-import Header from './components/header';
+import DashboardHeader from './components/dashboard/header';
 import Dashboard from './pages/dashboard/dashboard';
 import Sidebar from './components/sidebar';
 import MissList from './pages/dashboard/miss-list';
@@ -60,7 +60,7 @@ const Router = () => {
         isSideBarOpen={isSideBarOpen}
       />}
       <div className="h-screen w-full flex-1 overflow-y-scroll scrollbar-hide">
-        {isUserLogin && window.matchMedia('(max-width: 1280px)').matches && pathname.startsWith('/dashboard') && <Header handleCollapse={handleCollapse} />}
+        {isUserLogin && window.matchMedia('(max-width: 1280px)').matches && pathname.startsWith('/dashboard') && <DashboardHeader handleCollapse={handleCollapse} />}
         <Routes>
           <Route
             path="/login"
