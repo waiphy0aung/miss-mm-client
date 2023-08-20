@@ -122,15 +122,16 @@ export const deleteMissService = async (id, callback) => {
   }
 }
 
-export const voteMissService = async (missId, categoryId, categoryName, callback) => {
+export const voteMissService = async (miss, categoryId, categoryName, callback) => {
   const fetchResponse = await fetchUtilities.post({
-    endpoint: `/vote?missId=${missId}&categoryId=${categoryId}`,
+    endpoint: `/vote?missId=${miss._id}&categoryId=${categoryId}`,
     headers: { xToken: cookie.get('token') }
   })
   const { status, data } = fetchResponse;
   switch (status) {
     case 'success':
-      voteMissAction({ _id: missId, value: data ? false : true, categoryName: categoryName })
+      voteMissAction({ _id: miss._id, value: data ? false : true, categoryName: categoryName })
+      toast.success(`You ${data ? 'unvoted' : 'voted'} `+miss.name)
       callback(undefined);
       break;
     case 'error':

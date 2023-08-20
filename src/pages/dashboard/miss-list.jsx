@@ -24,7 +24,7 @@ const MissList = () => {
 
   return (
     <div className="h-full">
-      <div className="mb-5 py-5 pr-4">
+      <div className="mb-5 p-5">
         <div className="mb-5 flex items-center justify-between gap-x-4">
           <div className="flex items-center space-x-3 lg:w-2/3 xl:w-1/2 2xl:w-1/3">
             <p className="text-2xl font-bold text-primary">Misses List</p>

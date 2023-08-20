@@ -16,6 +16,8 @@ import { getCategoriesServices } from './services/category.service';
 import { getMissesService } from './services/miss.services';
 import CreateMiss from './pages/dashboard/miss-create';
 import UpdateMiss from './pages/dashboard/miss-update';
+import Miss from './pages/miss';
+import { getLockService } from './services/lock.service';
 
 const Router = () => {
   const cookie = new Cookies()
@@ -26,20 +28,21 @@ const Router = () => {
   const role = useMemo(() => user.role, [user.role])
   const [loading, setLoading] = useState(true);
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.matchMedia('(max-width: 1280px)').matches ? false : true);
+  const location = useLocation()
 
   useEffect(() => {
     if (token) {
-      loginWithTokenService(token, async () => {
-        if (cookie.get('role') === 'admin') {
-          getMissesService();
-          getCategoriesServices();
-        }
+      getLockService()
+      setLoading(true)
+      loginWithTokenService(async () => {
+        await getMissesService();
+        await getCategoriesServices();
         setLoading(false)
       })
     } else {
       setLoading(false)
     }
-  }, [])
+  }, [isUserLogin])
 
   const handleCollapse = () => {
     setIsSideBarOpen((preState) => !preState);
@@ -92,6 +95,17 @@ const Router = () => {
                 role={role}
               >
                 <Home />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/miss/:slug"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <Miss />
               </RouteGuard>
             }
           />

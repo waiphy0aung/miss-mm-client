@@ -80,47 +80,51 @@ const CreateMiss = () => {
 
     createMissService(formData, (err) => {
       if (err) setErrors(err);
-      else setMiss({
-        name: '',
-        age: '',
-        height: '',
-        weight: '',
-        location: '',
-        bust: '',
-        waist: '',
-        hips: '',
-        hobby: []
-      })
-      setPreview(null);
-      setImage(null)
+      // else setMiss({
+      //   name: '',
+      //   age: '',
+      //   height: '',
+      //   weight: '',
+      //   location: '',
+      //   bust: '',
+      //   waist: '',
+      //   hips: '',
+      //   hobby: []
+      // })
+      // setPreview(null);
+      // setImage(null)
       setLoading(false)
+      navigate('/dashboard/misses')
     })
 
   }
 
   return (
     <div className="h-full">
-      <div className="mb-5 py-5 pr-4">
+      <div className="mb-5 p-5">
         <div className="mb-5 flex items-center justify-between gap-x-4">
           <div className="flex items-center space-x-3 lg:w-2/3 xl:w-1/2 2xl:w-1/3">
             <p className="text-2xl font-bold text-primary">Create New Miss</p>
           </div>
+          <div>
+            <ButtonCommon onClick={() => navigate('/dashboard/misses')}><i className="fa-solid fa-arrow-left"></i> Back</ButtonCommon>
+          </div>
         </div>
 
-        <div className="flex flex-col xl:flex-row space-x-5 justify-center mt-10">
+        <div className="flex flex-col xl:flex-row space-x-5 justify-center max-sm:items-center mt-10 space-y-5">
           {preview && image ? (
             <label htmlFor="profile" className="h-[500px] w-[300px] rounded-lg cursor-pointer bg-center bg-cover" style={{ backgroundImage: `url(${preview})` }}>
-              <input type="file" className="hidden" id="profile" onChange={handleChange} />
+              <input type="file" className="hidden" id="profile" onChange={handleChange} accept="image/png, image/jpeg" />
             </label>
           ) : (
             <label htmlFor="profile" className="h-[500px] w-[300px] rounded-lg border border-primary flex justify-center items-center bg-secondary cursor-pointer">
               <i className="fa-solid fa-image text-2xl text-primary"></i>
-              <input type="file" className="hidden" id="profile" onChange={handleChange} />
+              <input type="file" className="hidden" id="profile" onChange={handleChange} accept="image/png, image/jpeg" />
             </label>
           )}
 
           <div className="flex flex-col justify-between">
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div className="grid grid-cols-2 gap-x-3">
                 <InputCommon
                   id="name"
@@ -196,7 +200,7 @@ const CreateMiss = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-x-3">
+              <div className="grid grid-cols-1 gap-x-3">
                 <InputCommon
                   id="location"
                   label="Address"

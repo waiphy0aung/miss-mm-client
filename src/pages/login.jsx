@@ -7,7 +7,7 @@ import { loginService } from "../services/auth.service";
 const Login = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ email: '', password: '' });
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     email: undefined,
     password: undefined,
@@ -24,9 +24,12 @@ const Login = () => {
 
   const handleLoginForm = async () => {
     setLoading(true)
-    loginService(inputs,navigate,err => {
-      if(err){
+    loginService(inputs, navigate, err => {
+      console.log(err)
+      if (err) {
         setErrors(err);
+      }else{
+        // window.location.reload()
       }
       setLoading(false)
     })

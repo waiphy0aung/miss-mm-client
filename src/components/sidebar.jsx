@@ -5,12 +5,14 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import ButtonCommon from "../commons/button.common";
 import { logoutService } from "../services/auth.service";
+import { setLockService } from "../services/lock.service";
+import { setLockAction } from "../actions/lock.action";
 
-const pages = ['/dashboard', '/dashboard/misses', '/dashboard/categories']
+const pages = ['', '/dashboard', '/dashboard/misses', '/dashboard/categories']
 
 const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
   const location = useLocation();
-
+  const lock = useSelector(state => state.lock);
   const user = useSelector(state => state.user);
 
   const calculateSideBarItemActive = useMemo(() => {
@@ -24,14 +26,18 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
   }, [location.pathname]);
 
   const handleLogout = async () => {
-    await logoutService()
-    window.location.reload()
+    logoutService()
+  }
+
+  const handleLockToggle = () => {
+    setLockAction(!lock)
+    setLockService()
   }
 
   return (
     <div
       className={`${isSideBarOpen &&
-        'max-xl:fixed max-xl:inset-0 mr-5 max-xl:z-40 max-xl:items-center max-xl:justify-center max-xl:bg-[#00000040] max-xl:transition-all'
+        'max-xl:fixed max-xl:inset-0 xl:mr-5 max-xl:z-40 max-xl:items-center max-xl:justify-center max-xl:bg-[#00000040] max-xl:transition-all'
         }`}
       onClick={handleCollapse}
     >
@@ -51,6 +57,12 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
               style={{ top: calculateSideBarItemActive }}
             />
             <SidebarItem
+              title="Home"
+              url="/"
+              icon="fa-solid fa-arrow-left"
+              handleCollapse={handleCollapse}
+            />
+            <SidebarItem
               title="Dashboard"
               url="/dashboard"
               icon="fa-solid fa-home"
@@ -68,6 +80,10 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
               icon="fa-solid fa-layer-group"
               handleCollapse={handleCollapse}
             />
+            <div className="flex items-center space-x-3 mt-3 justify-center">
+              <p className="text-primary mb-0">Lock:</p>
+              <input type="checkbox" className="toggle toggle-primary toggle-sm" checked={lock} onChange={() => handleLockToggle()} />
+            </div>
           </ul>
         </div>
 
@@ -78,10 +94,11 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
             role={user.role}
           />
           <ButtonCommon
-            children="Logout"
             onClick={() => handleLogout()}
             className="w-full"
-          />
+          >
+            Logout <i className="fa-solid fa-arrow-right-from-bracket"></i>
+          </ButtonCommon>
         </div>
 
       </div>

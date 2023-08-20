@@ -3,13 +3,15 @@ import mainReducer from './main';
 import userReducer from './user.store';
 import missReducer from './miss.store';
 import categoryReducer from './category.store';
+import lockReducer from './lock.store';
 
 const store = createStore(
 	combineReducers({
 		main: mainReducer,
     user: userReducer,
     misses: missReducer,
-    categories: categoryReducer
+    categories: categoryReducer,
+    lock: lockReducer
 	}),
 );
 

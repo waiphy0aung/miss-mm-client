@@ -16,8 +16,8 @@ export const loginService = async (inputs,navigate, callback) => {
       cookie.set('token', data.token);
       cookie.set('role', data.role);
       cookie.set('user', data.user);
+      // navigate('/')
       callback(undefined)
-      navigate('/')
       break;
     case 'fail':
       callback(data);
@@ -40,8 +40,7 @@ export const registerService = async (inputs,navigate, callback) => {
     case 'success':
       toast.success("Sign up success!")
       callback(undefined)
-      window.location.reload()
-      // navigate('/login')
+      navigate('/login')
       break;
     case 'fail':
       callback(data)
@@ -54,10 +53,10 @@ export const registerService = async (inputs,navigate, callback) => {
   }
 }
 
-export const loginWithTokenService = async (token,callback) => {
+export const loginWithTokenService = async (callback) => {
   const fetchResponse = await fetchUtilities.get({
     endpoint: '/auth/login',
-    headers: {xToken: token}
+    headers: {xToken: cookie.get('token')}
   })
   const {data,status} = fetchResponse;
   switch(status){
@@ -76,9 +75,11 @@ export const loginWithTokenService = async (token,callback) => {
   }
 }
 
-export const logoutService = async () => {
+export const logoutService = async (callback) => {
   cookie.remove('token');
   cookie.remove('role');
   cookie.remove('user');
   saveUserDataAction({});
+  window.location.pathname = "/login"
+  callback(undefined)
 }
