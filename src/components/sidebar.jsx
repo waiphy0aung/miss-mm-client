@@ -67,7 +67,7 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
       <div
         className={`
           scrollbar-hide bg-secondary relative flex h-screen flex-col justify-between px-10 py-5 transition-all max-xl:fixed
-          ${isSideBarOpen ? '-ml-0' : '-ml-[240px]'}
+          ${isSideBarOpen ? '-ml-0' : '-ml-[280px]'}
         `}
         onClick={(e) => e.stopPropagation()}
       >
