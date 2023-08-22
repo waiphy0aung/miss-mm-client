@@ -24,12 +24,12 @@ const Login = () => {
 
   const handleLoginForm = async () => {
     setLoading(true)
-    loginService(inputs, navigate, err => {
+    await loginService(inputs, navigate, err => {
       console.log(err)
       if (err) {
         setErrors(err);
       }else{
-        // window.location.reload()
+        window.location.pathname = '/'
       }
       setLoading(false)
     })

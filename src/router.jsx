@@ -6,7 +6,7 @@ import { Cookies } from 'react-cookie';
 import RouteGuard from './route_guard';
 import { useEffect, useMemo, useState } from 'react';
 import Home from './pages/home';
-import { loginWithTokenService } from './services/auth.service';
+import { loginWithTokenService, logoutService } from './services/auth.service';
 import DashboardHeader from './components/dashboard/header';
 import Dashboard from './pages/dashboard/dashboard';
 import Sidebar from './components/sidebar';
@@ -18,9 +18,12 @@ import CreateMiss from './pages/dashboard/miss-create';
 import UpdateMiss from './pages/dashboard/miss-update';
 import Miss from './pages/miss';
 import { getLockService } from './services/lock.service';
+import ButtonCommon from './commons/button.common';
+import ResultPage from './pages/result';
 
 const Router = () => {
   const cookie = new Cookies()
+  const lock = useSelector(state => state.lock);
   const user = useSelector(state => state.user)
   const token = cookie.get('token')
   const { pathname } = useLocation();
@@ -28,13 +31,12 @@ const Router = () => {
   const role = useMemo(() => user.role, [user.role])
   const [loading, setLoading] = useState(true);
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.matchMedia('(max-width: 1280px)').matches ? false : true);
-  const location = useLocation()
 
   useEffect(() => {
     if (token) {
-      getLockService()
       setLoading(true)
       loginWithTokenService(async () => {
+        await getLockService()
         await getMissesService();
         await getCategoriesServices();
         setLoading(false)
@@ -42,11 +44,21 @@ const Router = () => {
     } else {
       setLoading(false)
     }
-  }, [isUserLogin])
+  }, [])
 
   const handleCollapse = () => {
     setIsSideBarOpen((preState) => !preState);
   };
+
+  if (lock?.isLock && role === 'user' && isUserLogin) return (
+    <div className="h-screen w-screen flex flex-col justify-center items-center space-y-3">
+      <img src="/logo_long.png" />
+      <p className='font-semibold'>The match hasn't started yet</p>
+      <div>
+        <ButtonCommon onClick={() => logoutService()}>Logout <i className="fa-solid fa-right-from-bracket"></i></ButtonCommon>
+      </div>
+    </div>
+  )
 
   if (loading) {
     return (
@@ -106,6 +118,17 @@ const Router = () => {
                 role={role}
               >
                 <Miss />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/result"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <ResultPage />
               </RouteGuard>
             }
           />

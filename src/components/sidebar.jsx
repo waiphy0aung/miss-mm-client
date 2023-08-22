@@ -2,11 +2,11 @@ import { useLocation } from "react-router-dom";
 import SidebarItem from "./sidebar_item";
 import ProfileCard from "./profile_card";
 import { useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ButtonCommon from "../commons/button.common";
 import { logoutService } from "../services/auth.service";
-import { setLockService } from "../services/lock.service";
-import { setLockAction } from "../actions/lock.action";
+import { setLockService, setResultService, setVotingTimeService } from "../services/lock.service";
+import { saveLockAction } from "../actions/lock.action";
 
 const pages = ['', '/dashboard', '/dashboard/misses', '/dashboard/categories']
 
@@ -14,6 +14,23 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
   const location = useLocation();
   const lock = useSelector(state => state.lock);
   const user = useSelector(state => state.user);
+  const [resultHour, setResultHour] = useState(new Date().getHours());
+  const [resultMinute, setResultMinute] = useState(new Date().getMinutes())
+  let hours = [];
+  let minutes = [];
+  for (let i = 1; i <= 24; i++) {
+    if (i > new Date().getHours()) {
+      hours.push(i)
+    }
+  }
+  for (let i = 0; i < 59; i++) {
+    minutes.push(i)
+  }
+
+  useEffect(() => {
+    setResultHour(new Date(lock?.votingTime).getHours())
+    setResultMinute(new Date(lock?.votingTime).getMinutes())
+  },[])
 
   const calculateSideBarItemActive = useMemo(() => {
     let topPx = 24;
@@ -30,8 +47,13 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
   }
 
   const handleLockToggle = () => {
-    setLockAction(!lock)
+    saveLockAction({ ...lock, isLock: !lock?.isLock })
     setLockService()
+  }
+
+  const handleResultToggle = () => {
+    saveLockAction({ ...lock, result: !lock?.result })
+    setResultService()
   }
 
   return (
@@ -82,8 +104,43 @@ const Sidebar = ({ isSideBarOpen, handleCollapse }) => {
             />
             <div className="flex items-center space-x-3 mt-3 justify-center">
               <p className="text-primary mb-0">Lock:</p>
-              <input type="checkbox" className="toggle toggle-primary toggle-sm" checked={lock} onChange={() => handleLockToggle()} />
+              <input type="checkbox" className="toggle toggle-primary toggle-sm" checked={lock?.isLock} onChange={() => handleLockToggle()} />
             </div>
+
+            <div className="mt-2 px-5 pb-5 pt-3 bg-white rounded-lg shadow-xl">
+              <p className="text-primary font-semibold">Set Voting Time</p>
+              <div className="flex items-center justify-center">
+                <select
+                  name="hours"
+                  className="bg-transparent text-xl appearance-none outline-none"
+                  value={resultHour}
+                  onChange={(e) => setResultHour(e.target.value)}
+                >
+                  {hours.map(hour => {
+                    return <option value={hour} key={hour}>{hour}</option>
+                  })}
+
+                </select>
+                <span className="text-xl mx-3">:</span>
+                <select
+                  name="minutes"
+                  className="bg-transparent text-xl appearance-none outline-none mr-4"
+                  value={resultMinute}
+                  onChange={e => setResultMinute(e.target.value)}
+                >
+                  {
+                    minutes.map(minute => {
+                      return <option value={minute} key={minute}>{("0" + minute).slice(-2)}</option>
+                    })
+                  }
+                </select>
+                <div>
+                  <ButtonCommon onClick={() => setVotingTimeService({time: `${resultHour}:${resultMinute}`})}>Save</ButtonCommon>
+                </div>
+              </div>
+            </div>
+
+
           </ul>
         </div>
 

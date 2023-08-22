@@ -36,3 +36,39 @@ export const setLockService = async () => {
     default: break;
   }
 }
+
+export const setResultService = async () => {
+  const fetchResponse = await fetchUtilities.post({
+    endpoint: '/lock/result',
+    headers: { xToken: cookie.get('token') }
+  })
+  const { status, data } = fetchResponse;
+  switch (status) {
+    case 'success':
+      break;
+    case 'error':
+      toast.error(data);
+      break;
+    default: break;
+  }
+}
+
+export const setVotingTimeService = async (time) => {
+  const fetchResponse = await fetchUtilities.post({
+    endpoint: "/lock/voting-time",
+    headers: { xToken: cookie.get("token") },
+    data: time
+  })
+
+  const { status, data } = fetchResponse;
+  switch (status) {
+    case 'success':
+      saveLockAction(data);
+      toast.success("Saved successfully")
+      break;
+    case 'error':
+      toast.error(data);
+      break;
+    default: break;
+  }
+}

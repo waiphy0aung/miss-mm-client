@@ -4,7 +4,7 @@ import { Cookies } from "react-cookie";
 import fetchUtilities from "../utilities/fetch.utility";
 const cookie = new Cookies();
 
-export const loginService = async (inputs,navigate, callback) => {
+export const loginService = async (inputs, navigate, callback) => {
   const fetchResponse = await fetchUtilities.post({
     endpoint: '/auth/login',
     data: inputs
@@ -16,7 +16,6 @@ export const loginService = async (inputs,navigate, callback) => {
       cookie.set('token', data.token);
       cookie.set('role', data.role);
       cookie.set('user', data.user);
-      // navigate('/')
       callback(undefined)
       break;
     case 'fail':
@@ -30,7 +29,7 @@ export const loginService = async (inputs,navigate, callback) => {
   }
 }
 
-export const registerService = async (inputs,navigate, callback) => {
+export const registerService = async (inputs, navigate, callback) => {
   const fetchResponse = await fetchUtilities.post({
     endpoint: '/auth/register',
     data: inputs
@@ -56,14 +55,14 @@ export const registerService = async (inputs,navigate, callback) => {
 export const loginWithTokenService = async (callback) => {
   const fetchResponse = await fetchUtilities.get({
     endpoint: '/auth/login',
-    headers: {xToken: cookie.get('token')}
+    headers: { xToken: cookie.get('token') }
   })
-  const {data,status} = fetchResponse;
-  switch(status){
+  const { data, status } = fetchResponse;
+  switch (status) {
     case 'success':
       saveUserDataAction(data.user);
-      cookie.set('token',data.token);
-      cookie.set('role',data.role);
+      cookie.set('token', data.token);
+      cookie.set('role', data.role);
       callback(undefined);
       break;
     case 'error':
@@ -79,7 +78,7 @@ export const logoutService = async (callback) => {
   cookie.remove('token');
   cookie.remove('role');
   cookie.remove('user');
-  saveUserDataAction({});
   window.location.pathname = "/login"
+  saveUserDataAction({});
   callback(undefined)
 }

@@ -5,9 +5,11 @@ import { logoutService } from "../services/auth.service";
 
 const Home = () => {
   const navigate = useNavigate()
+  const lock = useSelector(state => state.lock);
   const categories = useSelector(state => state.categories);
   const misses = useSelector(state => state.misses);
   const { role } = useSelector(state => state.user);
+  console.log(lock, role)
 
   return (
     <div className="h-screen bg-secondary flex flex-col items-center py-10 space-y-[50px]">

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const Dashboard = () => {
   const categories = useSelector(state => state.categories);
   const misses = useSelector(state => state.misses);
-  const [selectedCategory,setSelectedCategory] = useState(categories[0]?.slug);
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]?.slug);
 
   return (
     <div className="h-full">
@@ -39,10 +39,10 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {misses.sort((a,b) => a.voteCount[selectedCategory] > b.voteCount[selectedCategory] ? 0 : 1).map((miss, index) => {
+              {misses.sort((a, b) => a.voteCount[selectedCategory] > b.voteCount[selectedCategory] ? 0 : 1).map((miss, index) => {
                 return (
                   <tr key={miss._id} className={
-                    miss.voteCount[selectedCategory] > 0 ? index === 0 ? 'bg-yellow-600 text-white' : index === 1 ? 'bg-primary text-white' : index === 2 ? 'bg-cyan-500 text-white' : '' : ''
+                    miss.voteCount[selectedCategory] > 0 && index === 0 ? 'bg-yellow-600 text-white' : ''
                   }>
                     <th>{index + 1}</th>
                     <td className="font-semibold">{miss.name}</td>
