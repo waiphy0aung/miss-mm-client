@@ -20,6 +20,12 @@ import Miss from './pages/miss';
 import { getLockService } from './services/lock.service';
 import ButtonCommon from './commons/button.common';
 import ResultPage from './pages/result';
+import UserList from './pages/dashboard/users';
+import { getUsersService } from './services/users.service';
+import Header from './components/header';
+import SelectCategory from './pages/select_category';
+import Contact from './pages/contact';
+import MissDetail from './pages/miss-detail';
 
 const Router = () => {
   const cookie = new Cookies()
@@ -28,17 +34,18 @@ const Router = () => {
   const token = cookie.get('token')
   const { pathname } = useLocation();
   const isUserLogin = useMemo(() => !!user.isLogin, [user.isLogin]);
-  const role = useMemo(() => user.role, [user.role])
+  const role = cookie.get('role')
   const [loading, setLoading] = useState(true);
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.matchMedia('(max-width: 1280px)').matches ? false : true);
 
   useEffect(() => {
+    getLockService()
     if (token) {
       setLoading(true)
       loginWithTokenService(async () => {
-        await getLockService()
         await getMissesService();
         await getCategoriesServices();
+        if (role === 'admin') await getUsersService();
         setLoading(false)
       })
     } else {
@@ -50,13 +57,11 @@ const Router = () => {
     setIsSideBarOpen((preState) => !preState);
   };
 
-  if (lock?.isLock && role === 'user' && isUserLogin) return (
+  if (lock?.isLock && role !== 'admin' && pathname !== "/login" && pathname !== '/register') return (
     <div className="h-screen w-screen flex flex-col justify-center items-center space-y-3">
       <img src="/logo_long.png" />
       <p className='font-semibold'>The match hasn't started yet</p>
-      <div>
-        <ButtonCommon onClick={() => logoutService()}>Logout <i className="fa-solid fa-right-from-bracket"></i></ButtonCommon>
-      </div>
+
     </div>
   )
 
@@ -69,13 +74,15 @@ const Router = () => {
   }
 
   return (
-    <div className="flex">
-      {isUserLogin && pathname.startsWith('/dashboard') && <Sidebar
+    <div className="flex" style={{ backgroundImage: `url('/contest-bg.png')` }}>
+      {pathname !== '/login' && pathname !== 'register' && <Sidebar
         handleCollapse={handleCollapse}
         isSideBarOpen={isSideBarOpen}
+        isUserLogin={isUserLogin}
       />}
       <div className="h-screen w-full flex-1 overflow-y-scroll scrollbar-hide">
-        {isUserLogin && window.matchMedia('(max-width: 1280px)').matches && pathname.startsWith('/dashboard') && <DashboardHeader handleCollapse={handleCollapse} />}
+        {pathname !== '/login' && pathname !== '/register' && <Header handleCollapse={handleCollapse} isUserLogin={isUserLogin} />}
+
         <Routes>
           <Route
             path="/login"
@@ -102,11 +109,30 @@ const Router = () => {
           <Route
             path="/"
             element={
+              <Home />
+            }
+          />
+          <Route
+            path="/category"
+            element={
               <RouteGuard
                 isUserLogin={isUserLogin}
                 role={role}
               >
-                <Home />
+                <SelectCategory />
+
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <Contact />
+
               </RouteGuard>
             }
           />
@@ -118,6 +144,17 @@ const Router = () => {
                 role={role}
               >
                 <Miss />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/miss-detail/:id"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <MissDetail />
               </RouteGuard>
             }
           />
@@ -184,6 +221,17 @@ const Router = () => {
                 role={role}
               >
                 <CategoryList />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/dashboard/users"
+            element={
+              <RouteGuard
+                isUserLogin={isUserLogin}
+                role={role}
+              >
+                <UserList />
               </RouteGuard>
             }
           />

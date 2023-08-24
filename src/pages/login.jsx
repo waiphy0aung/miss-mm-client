@@ -25,7 +25,6 @@ const Login = () => {
   const handleLoginForm = async () => {
     setLoading(true)
     await loginService(inputs, navigate, err => {
-      console.log(err)
       if (err) {
         setErrors(err);
       }else{

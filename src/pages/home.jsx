@@ -2,42 +2,29 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ButtonCommon from "../commons/button.common";
 import { logoutService } from "../services/auth.service";
+import Header from "../components/header";
+import { useEffect, useState } from "react";
 
 const Home = () => {
   const navigate = useNavigate()
-  const lock = useSelector(state => state.lock);
-  const categories = useSelector(state => state.categories);
-  const misses = useSelector(state => state.misses);
-  const { role } = useSelector(state => state.user);
-  console.log(lock, role)
+  const [selectedImage, setSelectedImage] = useState(1)
+
+  useEffect(() => {
+    let intervalId = setInterval(() => {
+      setSelectedImage(selectedImage + 1 > 4 ? 1 : selectedImage + 1);
+    }, 3000);
+
+    return () => clearInterval(intervalId)
+  }, [selectedImage]);
 
   return (
-    <div className="h-screen bg-secondary flex flex-col items-center py-10 space-y-[50px]">
-      <div className="">
-        <img src="/logo_long.png" className="h-[120px]" />
+    <div className="flex flex-col items-center space-y-[50px]">
+      <div className="relative w-full">
+        <div className="w-full h-[250px] xl:h-[500px] transition-all duration-1000 bg-center bg-cover" style={{ backgroundImage: `url('/covers/${selectedImage}.jpg')` }} />
       </div>
-      <p className="text-xl font-semibold">Please Choose Category To Vote</p>
-      <div className="grid grid-cols-1 justify-center items-center gap-y-3">
-        {
-          categories.map(category => {
-            const isVoted = misses.find(v => v.isVote[category.slug]);
-            return (
-              <div className="p-3 px-10 cursor-pointer text-center rounded-full bg-primary text-white transition-all" key={category._id} onClick={() => navigate('/miss/' + category.slug)}>
-                {category.name}   {isVoted && <i className="fa-regular fa-circle-check text-success"></i>}
-              </div>
-            )
-          })
-        }
-      </div>
-      {
-        role === "admin" && (
-          <div className="absolute bottom-5 left-5">
-            <ButtonCommon onClick={() => navigate('/dashboard')}>Go to Dashboard</ButtonCommon>
-          </div>
-        )
-      }
-      <div className="absolute bottom-5 right-5">
-        <ButtonCommon onClick={() => logoutService()}>Logout <i className="fa-solid fa-right-from-bracket"></i></ButtonCommon>
+      <p className="font-bold text-primary text-2xl">Miss Myanmar Voting System</p>
+      <div className="flex justify-center">
+        <ButtonCommon onClick={() => navigate('/category')}>Start Vote</ButtonCommon>
       </div>
     </div>
 

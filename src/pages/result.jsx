@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ShowCounter from "../components/show_counter";
-import moment, { min } from "moment";
+import moment from "moment";
+import ButtonCommon from "../commons/button.common";
 
 const ResultPage = () => {
 
@@ -37,22 +38,20 @@ const ResultPage = () => {
 
   const navigate = useNavigate();
   const categories = useSelector(state => state.categories);
-  const misses = useSelector(state => state.misses);
+  let misses = useSelector(state => state.misses);
   const lock = useSelector(state => state.lock);
 
-  const dateTimeAfterThreeDays = new Date(lock?.votingTime).getTime();
-  console.log(dateTimeAfterThreeDays)
-  console.log(moment(lock?.votingTime).format("DD H:mm a"))
+  misses.forEach(miss => {
+    categories.forEach(category => {
+      if (!miss.voteCount[category.slug]) miss.voteCount[category.slug] = 0;
+    })
+  })
 
-  const [hours, minutes, seconds] = useCountdown(dateTimeAfterThreeDays)
-  console.log(hours, minutes, seconds)
-
+  const [hours, minutes, seconds] = useCountdown(new Date(lock?.votingTime).getTime())
 
   return (
     <>
-      <Header />
-
-      <div className="px-10">
+      <div className="px-5">
         <div className="text-sm breadcrumbs my-4">
           <ul>
             <li className="text-primary"><a onClick={() => navigate('/')}>Home</a></li>
@@ -62,13 +61,43 @@ const ResultPage = () => {
 
         {
           hours + minutes + seconds <= 0 ? (
-            <div></div>
+            <div className="overflow-x-auto">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Winner</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {categories.map((category, index) => {
+                    const winner = misses.sort((a, b) => b.voteCount[category.slug] - a.voteCount[category.slug])[0]
+
+                    return (
+                      <tr key={category._id}>
+                        <th>{index + 1}</th>
+                        <td className="font-semibold whitespace-nowrap">{category.name}</td>
+                        <td className="font-semibold whitespace-nowrap">{winner.voteCount[category.slug] === 0 ? '' : winner.name}</td>
+                        <td className="flex space-x-3">
+                          <p className="underline text-primary cursor-pointer" onClick={() => navigate('/miss-detail/'+winner._id)}>Details</p>
+                        </td>
+                      </tr>
+                    )
+                  })}
+
+                </tbody>
+              </table>
+            </div>
           ) : (
-            <ShowCounter
-              hours={hours}
-              minutes={minutes}
-              seconds={seconds}
-            />
+            <div className="flex justify-center items-center">
+              <ShowCounter
+                hours={hours}
+                minutes={minutes}
+                seconds={seconds}
+              />
+            </div>
           )
         }
       </div>

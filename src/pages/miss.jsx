@@ -24,13 +24,11 @@ const Miss = () => {
 
   return (
     <>
-      <Header />
-
-      <div className="px-10">
+      <div className="px-5">
         <div className="text-sm breadcrumbs my-4">
           <ul>
             <li className="text-primary"><a onClick={() => navigate('/')}>Home</a></li>
-            <li className="text-primary"><a>Miss</a></li>
+            <li className="text-primary"><a onClick={() => navigate('/category')}>Category</a></li>
             <li>{category.name}</li>
           </ul>
         </div>

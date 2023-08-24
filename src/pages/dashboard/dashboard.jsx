@@ -4,8 +4,15 @@ import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const categories = useSelector(state => state.categories);
-  const misses = useSelector(state => state.misses);
+  let misses = useSelector(state => state.misses);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]?.slug);
+
+  misses.forEach(miss => {
+    categories.forEach(category => {
+      if(!miss.voteCount[category.slug]) miss.voteCount[category.slug] = 0;
+    })
+  })
+  console.log(misses)
 
   return (
     <div className="h-full">
@@ -39,7 +46,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {misses.sort((a, b) => a.voteCount[selectedCategory] > b.voteCount[selectedCategory] ? 0 : 1).map((miss, index) => {
+              {misses.sort((a, b) => b.voteCount[selectedCategory] - a.voteCount[selectedCategory])?.map((miss, index) => {
                 return (
                   <tr key={miss._id} className={
                     miss.voteCount[selectedCategory] > 0 && index === 0 ? 'bg-yellow-600 text-white' : ''
