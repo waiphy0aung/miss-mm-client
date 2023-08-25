@@ -99,20 +99,7 @@ const UpdateMiss = () => {
 
     updateMissService(miss._id, formData, (err) => {
       if (err) setErrors(err);
-      // else setMiss({
-      //   name: '',
-      //   age: '',
-      //   height: '',
-      //   weight: '',
-      //   location: '',
-      //   bust: '',
-      //   waist: '',
-      //   hips: '',
-      //   hobby: []
-      // })
-      // setImage(null)
-      // setPreview(null)
-      navigate('/dashboard/misses')
+      else navigate('/dashboard/misses')
       setLoading(false)
     })
 
@@ -176,7 +163,7 @@ const UpdateMiss = () => {
               <div className="grid grid-cols-2 gap-x-3">
                 <InputCommon
                   id="height"
-                  label="Height"
+                  label="Height (cm)"
                   placeholder="Miss Height"
                   type="number"
                   value={miss.height}
@@ -186,7 +173,7 @@ const UpdateMiss = () => {
                 />
                 <InputCommon
                   id="weight"
-                  label="Weight"
+                  label="Weight (kg)"
                   placeholder="Miss Weight"
                   type="number"
                   value={miss.weight}
@@ -198,7 +185,7 @@ const UpdateMiss = () => {
               <div className="grid grid-cols-3 gap-x-3">
                 <InputCommon
                   id="bust"
-                  label="Bust"
+                  label="Bust (inches)"
                   placeholder="Miss Bust"
                   type="number"
                   value={miss.bust}
@@ -208,7 +195,7 @@ const UpdateMiss = () => {
                 />
                 <InputCommon
                   id="waist"
-                  label="Waist"
+                  label="Waist (inches)"
                   placeholder="Miss Waist"
                   type="number"
                   value={miss.waist}
@@ -218,7 +205,7 @@ const UpdateMiss = () => {
                 />
                 <InputCommon
                   id="hips"
-                  label="Hips"
+                  label="Hips (inches)"
                   placeholder="Miss Hips"
                   type="number"
                   value={miss.hips}
