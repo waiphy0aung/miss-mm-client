@@ -3,8 +3,9 @@ import Header from "../components/header";
 import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import ShowCounter from "../components/show_counter";
-import moment from "moment";
+import moment from "moment-timezone";
 import ButtonCommon from "../commons/button.common";
+import { getLockService } from "../services/lock.service";
 
 const ResultPage = () => {
 
@@ -47,7 +48,7 @@ const ResultPage = () => {
     })
   })
 
-  const [hours, minutes, seconds] = useCountdown(new Date(lock?.votingTime).getTime())
+  const [hours, minutes, seconds] = useCountdown(moment(lock?.votingTime).tz('Asia/Yangon').toDate())
 
   return (
     <>
@@ -74,14 +75,13 @@ const ResultPage = () => {
                 <tbody>
                   {categories.map((category, index) => {
                     const winner = misses.sort((a, b) => b.voteCount[category.slug] - a.voteCount[category.slug])[0]
-
                     return (
                       <tr key={category._id}>
                         <th>{index + 1}</th>
                         <td className="font-semibold whitespace-nowrap">{category.name}</td>
-                        <td className="font-semibold whitespace-nowrap">{winner.voteCount[category.slug] === 0 ? '' : winner.name}</td>
+                        <td className="font-semibold whitespace-nowrap">{winner.voteCount[category.slug] === 0 ? '-' : winner.name}</td>
                         <td className="flex space-x-3">
-                          <p className="underline text-primary cursor-pointer" onClick={() => navigate('/miss-detail/'+winner._id)}>Details</p>
+                          {winner.voteCount[category.slug] !== 0 && <p className="underline text-primary cursor-pointer" onClick={() => navigate('/miss-detail/' + winner._id)}>Details</p>}
                         </td>
                       </tr>
                     )

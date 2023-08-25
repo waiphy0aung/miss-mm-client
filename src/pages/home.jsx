@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 const Home = () => {
   const navigate = useNavigate()
   const [selectedImage, setSelectedImage] = useState(1)
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
     let intervalId = setInterval(() => {
@@ -22,10 +23,15 @@ const Home = () => {
       <div className="relative w-full">
         <div className="w-full h-[250px] xl:h-[500px] transition-all duration-1000 bg-center bg-cover" style={{ backgroundImage: `url('/covers/${selectedImage}.jpg')` }} />
       </div>
-      <p className="font-bold text-primary text-2xl">Miss Myanmar Voting System</p>
-      <div className="flex justify-center">
-        <ButtonCommon onClick={() => navigate('/category')}>Start Vote</ButtonCommon>
-      </div>
+      <p className="font-bold text-primary text-4xl">Miss Myanmar Voting System</p>
+      {
+        user?.role !== "admin" && (
+          <div className="flex justify-center">
+            <ButtonCommon onClick={() => user?.role ? navigate('/category') : navigate('/login')}>Start Vote</ButtonCommon>
+          </div>
+        )
+      }
+
     </div>
 
   )

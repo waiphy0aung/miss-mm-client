@@ -75,7 +75,7 @@ const Router = () => {
 
   return (
     <div className="flex" style={{ backgroundImage: `url('/contest-bg.png')` }}>
-      {pathname !== '/login' && pathname !== 'register' && <Sidebar
+      {pathname !== '/login' && pathname !== '/register' && <Sidebar
         handleCollapse={handleCollapse}
         isSideBarOpen={isSideBarOpen}
         isUserLogin={isUserLogin}

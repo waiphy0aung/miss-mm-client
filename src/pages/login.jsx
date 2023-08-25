@@ -40,7 +40,8 @@ const Login = () => {
         <h1 className="mb-10 flex items-center justify-center">
           <img
             src="./logo_long.png"
-            height={40}
+            className="cursor-pointer"
+            onClick={() => navigate('/')}
           />
         </h1>
 

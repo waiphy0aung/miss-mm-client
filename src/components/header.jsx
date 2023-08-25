@@ -19,7 +19,6 @@ const Header = ({ handleCollapse, isUserLogin }) => {
         <img src="/logo_long.png" className="xl:h-[80px] h-[50px]" />
       </div>
       <div className="navbar-end space-x-3">
-        {user?.role === "admin" && <button className="btn btn-primary max-sm:hidden rounded-full" onClick={() => navigate('/dashboard')}>Dashboard</button>}
         {
           isUserLogin ? (
             <div className="dropdown dropdown-end">

@@ -30,7 +30,7 @@ const UserList = () => {
                 return (
                   <tr key={user._id}>
                     <td>{index + 1}</td>
-                    <td className="font-semibold">{user.name}</td>
+                    <td className="font-semibold">{user?.name}</td>
                     <td className="font-semibold">{user.email}</td>
                     <td className="">
                       {
@@ -38,7 +38,7 @@ const UserList = () => {
                           <ul className="menu bg-base-200 rounded-box">
                             {
                               user?.votes?.map(vote => {
-                                return <li key={vote._id}><a className="whitespace-nowrap">{categories?.find(v => v._id === vote.categoryId).name}: <span className="text-primary font-semibold">{misses?.find(v => v._id === vote.missId).name}</span></a></li>
+                                return <li key={vote._id}><a className="whitespace-nowrap">{categories?.find(v => v._id === vote.categoryId)?.name}: <span className="text-primary font-semibold">{misses?.find(v => v._id === vote.missId)?.name}</span></a></li>
                               })
                             }
                           </ul>

@@ -65,6 +65,7 @@ export const setVotingTimeService = async (time) => {
     case 'success':
       saveLockAction(data);
       toast.success("Saved successfully")
+      window.location.reload(false)
       break;
     case 'error':
       toast.error(data);

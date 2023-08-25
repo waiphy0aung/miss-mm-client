@@ -1,5 +1,5 @@
-const fetchUrl = "https://miss-mm.onrender.com";
-// export const fetchUrl = "http://localhost:3002"
+// const fetchUrl = "https://miss-mm.onrender.com";
+export const fetchUrl = "http://localhost:3002"
 
 async function fetchPostRequest({
   endpoint,
