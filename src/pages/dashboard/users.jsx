@@ -1,10 +1,26 @@
 import { useSelector } from "react-redux";
 import ButtonCommon from "../../commons/button.common";
+import ConfirmModal from "../../components/confirm_modal";
+import { useState } from "react";
+import { deleteUserService } from "../../services/users.service";
 
 const UserList = () => {
   let users = useSelector(state => state.users);
   const categories = useSelector(state => state.categories);
   const misses = useSelector(state => state.misses);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  const showDeleteModal = (id) => {
+    setDeleteId(id);
+    setShowModal(true);
+  }
+
+  const deleteUser = () => {
+    deleteUserService(deleteId, () => {
+      setShowModal(prev => !prev)
+    });
+  }
 
   return (
     <div className="h-full">
@@ -22,7 +38,8 @@ const UserList = () => {
                 <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>votes</th>
+                <th>Votes</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -46,6 +63,9 @@ const UserList = () => {
                       }
 
                     </td>
+                    <td className="flex space-x-3">
+                      <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => showDeleteModal(user._id)}></i>
+                    </td>
                   </tr>
                 )
               })}
@@ -53,7 +73,13 @@ const UserList = () => {
             </tbody>
           </table>
         </div>
-
+        <ConfirmModal
+          text="Are you sure you want to delete?"
+          confirmBtnText="Delete"
+          showModal={showModal}
+          setShowModal={() => setShowModal((prev) => !prev)}
+          handleConfirm={() => deleteUser()}
+        />
       </div>
     </div>
   )
