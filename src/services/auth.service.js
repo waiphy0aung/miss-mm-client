@@ -17,6 +17,7 @@ export const loginService = async (inputs, navigate, callback) => {
       cookie.set('role', data.role);
       cookie.set('user', data.user);
       callback(undefined)
+      window.location.pathname = '/'
       break;
     case 'fail':
       callback(data);

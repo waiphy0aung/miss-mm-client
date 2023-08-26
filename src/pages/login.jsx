@@ -28,7 +28,7 @@ const Login = () => {
       if (err) {
         setErrors(err);
       }else{
-        window.location.pathname = '/'
+        // window.location.pathname = '/'
       }
       setLoading(false)
     })

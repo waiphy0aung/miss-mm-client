@@ -19,11 +19,11 @@ const Home = () => {
   }, [selectedImage]);
 
   return (
-    <div className="flex flex-col items-center space-y-[50px]">
+    <div className="flex flex-col items-center space-y-[50px] text-center">
       <div className="relative w-full">
         <div className="w-full h-[250px] xl:h-[500px] transition-all duration-1000 bg-center bg-cover" style={{ backgroundImage: `url('/covers/${selectedImage}.jpg')` }} />
       </div>
-      <p className="font-bold text-primary text-4xl">Miss Myanmar Voting System</p>
+      <p className="font-bold text-primary text-3xl">Miss Myanmar Voting System</p>
       {
         user?.role !== "admin" && (
           <div className="flex justify-center">

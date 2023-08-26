@@ -64,7 +64,7 @@ const UserList = () => {
 
                     </td>
                     <td className="flex space-x-3">
-                      <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => showDeleteModal(user._id)}></i>
+                      {user?.role !== "admin" && (<i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => showDeleteModal(user._id)}></i>)}
                     </td>
                   </tr>
                 )
