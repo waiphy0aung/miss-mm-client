@@ -7,7 +7,7 @@ const MissDetail = () => {
   const navigate = useNavigate()
   const { id } = useParams();
   const misses = useSelector(state => state.misses);
-  const miss = misses.find(v => v._id === id);
+  const miss = misses.find(v => v.id === id);
 
   return (
     <div className="h-full">

@@ -8,13 +8,13 @@ const missReducer = (state = missState, { type, data }) => {
     case 'AddMissAction':
       return [...state, data]
     case 'UpdateMissAction':
-      tempData[tempData.findIndex(v => v._id === data._id)] = data;
+      tempData[tempData.findIndex(v => v.id === data.id)] = data;
       console.log("tempData ===>",tempData)
       return tempData;
     case 'DeleteMissAction':
-      return state.filter(v => v._id !== data);
+      return state.filter(v => v.id !== data);
     case 'VoteMissAction':
-      const index = tempData.findIndex(v => v._id === data._id);
+      const index = tempData.findIndex(v => v.id === data.id);
       tempData[index].isVote[data.categoryName] = data.value;
       return tempData;
     default:

@@ -11,7 +11,7 @@ const UpdateMiss = () => {
   const [pageLoading, setPageLoading] = useState(true)
   const id = searchParams.get('id');
   const [miss, setMiss] = useState({
-    _id: '',
+    id: '',
     name: '',
     age: '',
     height: '',
@@ -97,7 +97,7 @@ const UpdateMiss = () => {
       formData.append('image', image);
     }
 
-    updateMissService(miss._id, formData, (err) => {
+    updateMissService(miss.id, formData, (err) => {
       if (err) setErrors(err);
       else navigate('/dashboard/misses')
       setLoading(false)

@@ -61,7 +61,14 @@ const Router = () => {
     <div className="h-screen w-screen flex flex-col justify-center items-center space-y-3">
       <img src="/logo_long.png" />
       <p className='font-semibold'>The match hasn't started yet</p>
-
+      <div>
+        <ButtonCommon
+          onClick={() => logoutService()}
+          className="w-full"
+        >
+          Logout <i className="fa-solid fa-arrow-right-from-bracket"></i>
+        </ButtonCommon>
+      </div>
     </div>
   )
 

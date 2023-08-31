@@ -17,7 +17,7 @@ const SelectCategory = () => {
           categories.map(category => {
             const isVoted = misses.find(v => v.isVote[category.slug]);
             return (
-              <div className="p-3 px-10 cursor-pointer text-center rounded-full bg-primary text-white transition-all" key={category._id} onClick={() => navigate('/miss/' + category.slug)}>
+              <div className="p-3 px-10 cursor-pointer text-center rounded-full bg-primary text-white transition-all" key={category.id} onClick={() => navigate('/miss/' + category.slug)}>
                 {category.name}   {isVoted && <i className="fa-regular fa-circle-check text-success"></i>}
               </div>
             )

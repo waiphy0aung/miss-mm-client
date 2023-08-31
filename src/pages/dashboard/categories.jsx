@@ -27,7 +27,7 @@ const CategoryList = () => {
 
   const updateCategory = () => {
     setLoading(true)
-    updateCategoryService(editData._id, editData, (err) => {
+    updateCategoryService(editData.id, editData, (err) => {
       if (err) setErrors(err);
       setEditData(null)
       setLoading(false)
@@ -82,12 +82,12 @@ const CategoryList = () => {
             <tbody>
               {categories.map((category, index) => {
                 return (
-                  <tr key={category._id}>
+                  <tr key={category.id}>
                     <th>{index + 1}</th>
                     <td className="font-semibold">{category.name}</td>
                     <td className="flex space-x-3">
                       <i className="fa-solid fa-edit cursor-pointer" onClick={() => setEditData(category)}></i>
-                      <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => showDeleteModal(category._id)}></i>
+                      <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => showDeleteModal(category.id)}></i>
                     </td>
                   </tr>
                 )

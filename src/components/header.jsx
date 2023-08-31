@@ -2,6 +2,7 @@ import { useSelector } from "react-redux"
 import { logoutService } from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import ButtonCommon from "../commons/button.common";
+import {faker} from "@faker-js/faker"
 
 const Header = ({ handleCollapse, isUserLogin }) => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Header = ({ handleCollapse, isUserLogin }) => {
                 }
                 <div className="avatar">
                   <div className="w-8 rounded-full">
-                    <img src={user.profile} />
+                    <img src={faker.image.avatarGitHub()} />
                   </div>
                 </div>
               </label>
