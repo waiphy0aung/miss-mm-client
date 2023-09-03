@@ -67,9 +67,9 @@ export const loginWithTokenService = async (callback) => {
       callback(undefined);
       break;
     case 'error':
-      toast.error(data);
+      if(data === "Unauthenticate") window.location.pathname = '/login'
       cookie.remove('token')
-      callback(undefined)
+      callback(true)
       break;
     default: break;
   }

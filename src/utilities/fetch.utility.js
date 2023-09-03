@@ -1,6 +1,6 @@
 // const fetchUrl = "https://miss-mm.onrender.com";
 const fetchUrl = "https://miss-universe-mm.onrender.com/api";
-// export const fetchUrl = "http://localhost:3002/api"
+// export const fetchUrl = "http://localhost:8000/api"
 
 async function fetchPostRequest({
   endpoint,

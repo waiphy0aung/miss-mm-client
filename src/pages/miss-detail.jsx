@@ -17,7 +17,7 @@ const MissDetail = () => {
             <ul>
               <li className="text-primary"><a onClick={() => navigate('/')}>Home</a></li>
               <li className="text-primary"><a>Miss</a></li>
-              <li>{miss.name}</li>
+              <li>{miss?.name}</li>
             </ul>
           </div>
           <div>

@@ -39,13 +39,15 @@ const Router = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.matchMedia('(max-width: 1280px)').matches ? false : true);
 
   useEffect(() => {
-    getLockService()
     if (token) {
       setLoading(true)
-      loginWithTokenService(async () => {
-        await getMissesService();
-        await getCategoriesServices();
-        if (role === 'admin') await getUsersService();
+      loginWithTokenService(async (err) => {
+        if (!err) {
+          await getLockService()
+          await getMissesService();
+          await getCategoriesServices();
+          if (role === 'admin') await getUsersService();
+        }
         setLoading(false)
       })
     } else {
