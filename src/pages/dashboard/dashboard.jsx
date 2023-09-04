@@ -28,7 +28,7 @@ const Dashboard = () => {
             {
               categories.map((category) => {
                 return (
-                  <option value={category.slug} key={category.id}>{category.name}</option>
+                  <option value={category.slug} key={category._id}>{category.name}</option>
                 )
               })
             }
@@ -48,7 +48,7 @@ const Dashboard = () => {
             <tbody>
               {misses.sort((a, b) => b.voteCount[selectedCategory] - a.voteCount[selectedCategory])?.map((miss, index) => {
                 return (
-                  <tr key={miss.id} className={
+                  <tr key={miss._id} className={
                     miss.voteCount[selectedCategory] > 0 && index === 0 ? 'bg-yellow-600 text-white' : ''
                   }>
                     <th>{index + 1}</th>

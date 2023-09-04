@@ -42,7 +42,7 @@ const Miss = () => {
             <div className="grid sm:grid-cols-1 xl:grid-cols-3 gap-3">
               {
                 misses?.map(miss => {
-                  return <MissCard key={miss.id} miss={miss} category={category} isVoted={isVoted} />
+                  return <MissCard key={miss._id} miss={miss} category={category} isVoted={isVoted} />
                 })
               }
             </div>

@@ -97,7 +97,7 @@ const UpdateMiss = () => {
       formData.append('image', image);
     }
 
-    updateMissService(miss.id, formData, (err) => {
+    updateMissService(miss._id, formData, (err) => {
       if (err) setErrors(err);
       else navigate('/dashboard/misses')
       setLoading(false)

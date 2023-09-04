@@ -45,7 +45,7 @@ const UserList = () => {
             <tbody>
               {users.map((user, index) => {
                 return (
-                  <tr key={user.id}>
+                  <tr key={user._id}>
                     <td>{index + 1}</td>
                     <td className="font-semibold">{user?.name}</td>
                     <td className="font-semibold">{user.email}</td>
@@ -55,7 +55,7 @@ const UserList = () => {
                           <ul className="menu bg-base-200 rounded-box">
                             {
                               user?.votes?.map(vote => {
-                                return <li key={vote.id}><a className="whitespace-nowrap">{categories?.find(v => v.id === vote.categoryId)?.name}: <span className="text-primary font-semibold">{misses?.find(v => v.id === vote.missId)?.name}</span></a></li>
+                                return <li key={vote._id}><a className="whitespace-nowrap">{categories?.find(v => v._id === vote.categoryId)?.name}: <span className="text-primary font-semibold">{misses?.find(v => v._id === vote.missId)?.name}</span></a></li>
                               })
                             }
                           </ul>
@@ -64,7 +64,7 @@ const UserList = () => {
 
                     </td>
                     <td className="flex space-x-3">
-                      {user?.role !== "admin" && (<i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => showDeleteModal(user.id)}></i>)}
+                      {user?.role !== "admin" && (<i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => showDeleteModal(user._id)}></i>)}
                     </td>
                   </tr>
                 )

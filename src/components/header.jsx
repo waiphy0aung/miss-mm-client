@@ -29,7 +29,7 @@ const Header = ({ handleCollapse, isUserLogin }) => {
                 }
                 <div className="avatar">
                   <div className="w-8 rounded-full">
-                    <img src={faker.image.avatarGitHub()} />
+                    <img src={user.profile} />
                   </div>
                 </div>
               </label>

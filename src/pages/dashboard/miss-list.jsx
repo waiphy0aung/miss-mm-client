@@ -37,7 +37,7 @@ const MissList = () => {
         <div className="grid sm:grid-cols-1 xl:grid-cols-3 gap-3">
           {misses.map(miss => {
             return (
-              <MissCard key={miss.id} miss={miss} isDashboard={true} handleShowDeleteModal={handleShowDeleteModal} />
+              <MissCard key={miss._id} miss={miss} isDashboard={true} handleShowDeleteModal={handleShowDeleteModal} />
             )
           })}
         </div>

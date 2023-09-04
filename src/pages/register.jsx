@@ -26,12 +26,12 @@ const Register = () => {
 
   const handleRegisterForm = async () => {
     setLoading(true)
-    // if(inputs.password !== '' && inputs.confirmPassword !== '' && inputs.confirmPassword !== inputs.password){
-    //   setLoading(false)
-    //   return setErrors(prev => ({...prev,confirmPassword: 'password not match'}))
-    // }
+    if(inputs.password !== '' && inputs.confirmPassword !== '' && inputs.confirmPassword !== inputs.password){
+      setLoading(false)
+      return setErrors(prev => ({...prev,confirmPassword: 'password not match'}))
+    }
     let inputData = {...inputs};
-    // delete inputData.confirmPassword
+    delete inputData.confirmPassword
     registerService(inputData,navigate,err => {
       if(err){
         setErrors(err);

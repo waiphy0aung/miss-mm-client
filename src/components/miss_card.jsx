@@ -9,7 +9,7 @@ const MissCard = ({ miss, category, isVoted, isDashboard, handleShowDeleteModal 
   const [loading, setLoading] = useState(false)
   const handleVote = () => {
     setLoading(true)
-    voteMissService(miss, category.id, category.slug, () => {
+    voteMissService(miss, category._id, category.slug, () => {
       setLoading(false)
     })
   }
@@ -38,11 +38,11 @@ const MissCard = ({ miss, category, isVoted, isDashboard, handleShowDeleteModal 
         <div className="card-actions justify-end flex space-x-3 mt-3">
           {isDashboard ? (
             <>
-              <i className="fa-solid fa-edit cursor-pointer" onClick={() => navigate('/dashboard/misses/update?id=' + miss.id)}></i>
-              <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => handleShowDeleteModal(miss.id)}></i>
+              <i className="fa-solid fa-edit cursor-pointer" onClick={() => navigate('/dashboard/misses/update?id=' + miss._id)}></i>
+              <i className="fa-solid fa-trash text-[red] cursor-pointer" onClick={() => handleShowDeleteModal(miss._id)}></i>
             </>
           ) : (
-            <ButtonCommon disabled={loading || (isVoted && isVoted.id !== miss.id)} onClick={() => handleVote()} className={miss.isVote[category.slug] ? 'btn-success' : ''}>
+            <ButtonCommon disabled={loading || (isVoted && isVoted._id !== miss._id)} onClick={() => handleVote()} className={miss.isVote[category.slug] ? 'btn-success' : ''}>
               {!loading ? miss.isVote[category.slug] ? 'Voted' : 'Vote' : null} {miss.isVote[category.slug] && !loading && <i className="fa-regular fa-circle-check"></i>} {loading && <span className="loading loading-spinner loading-xs"></span>}
             </ButtonCommon>
           )}

@@ -76,12 +76,12 @@ const ResultPage = () => {
                   {categories.map((category, index) => {
                     const winner = misses.sort((a, b) => b.voteCount[category.slug] - a.voteCount[category.slug])[0]
                     return (
-                      <tr key={category.id}>
+                      <tr key={category._id}>
                         <th>{index + 1}</th>
                         <td className="font-semibold whitespace-nowrap">{category.name}</td>
                         <td className="font-semibold whitespace-nowrap">{winner.voteCount[category.slug] === 0 ? '-' : winner.name}</td>
                         <td className="flex space-x-3">
-                          {winner.voteCount[category.slug] !== 0 && <p className="underline text-primary cursor-pointer" onClick={() => navigate('/miss-detail/' + winner.id)}>Details</p>}
+                          {winner.voteCount[category.slug] !== 0 && <p className="underline text-primary cursor-pointer" onClick={() => navigate('/miss-detail/' + winner._id)}>Details</p>}
                         </td>
                       </tr>
                     )
