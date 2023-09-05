@@ -36,7 +36,7 @@ export const getMissService = async (id,callback) => {
       break;
     case 'error':
       toast.error(data);
-      callback(undefined)
+      callback(undefined,undefined)
       break;
     default:
       break;

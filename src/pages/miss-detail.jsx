@@ -2,12 +2,21 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom"
 import ButtonCommon from "../commons/button.common";
 import ImageLoader from "react-load-image";
+import { getMissService } from "../services/miss.services";
+import { useEffect, useState } from "react";
 
 const MissDetail = () => {
   const navigate = useNavigate()
   const { id } = useParams();
-  const misses = useSelector(state => state.misses);
-  const miss = misses.find(v => v.id === id);
+  const [miss,setMiss] = useState(undefined)
+
+  useEffect(() => {
+    getMissService(id,(err,data) => {
+      if(!err && data){
+        setMiss(data)
+      }
+    })
+  },[])
 
   return (
     <div className="h-full">
@@ -27,22 +36,22 @@ const MissDetail = () => {
 
         <div className="flex flex-col xl:flex-row gap-3 items-center justify-center">
           <ImageLoader
-            src={miss.image}
+            src={miss?.image}
           >
-            <img className="h-[500px] w-full transition-all object-cover rounded-lg" src={miss.image} />
+            <img className="h-[500px] w-full transition-all object-cover rounded-lg" src={miss?.image} />
             <div>Error!</div>
             <div className="h-[500px] w-[300px] flex justify-center items-center">
               <span className="loading loading-dots loading-lg text-primary"></span>
             </div>
           </ImageLoader>
           <div className="card-body text-primary w-full">
-            <h2 className="card-title">{miss.name}</h2>
-            <p>Age: <span className="text-black">{miss.age}</span></p>
-            <p>Height: <span className="text-black">{miss.height} cm</span></p>
-            <p>Weight: <span className="text-black">{miss.weight} kg</span></p>
-            <p>Body Ratio: <span className="text-black">{miss.bust + '" ' + miss.waist + '" ' + miss.hips + '"'}</span></p>
-            <p>Address: <span className="text-black">{miss.location}</span></p>
-            <p>Hobby: <span className="text-black">{miss.hobby.join(", ")}</span></p>
+            <h2 className="card-title">{miss?.name}</h2>
+            <p>Age: <span className="text-black">{miss?.age}</span></p>
+            <p>Height: <span className="text-black">{miss?.height} cm</span></p>
+            <p>Weight: <span className="text-black">{miss?.weight} kg</span></p>
+            <p>Body Ratio: <span className="text-black">{miss?.bust + '" ' + miss?.waist + '" ' + miss?.hips + '"'}</span></p>
+            <p>Address: <span className="text-black">{miss?.location}</span></p>
+            <p>Hobby: <span className="text-black">{miss?.hobby.join(", ")}</span></p>
           </div>
         </div>
       </div>
