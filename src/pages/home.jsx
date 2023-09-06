@@ -25,7 +25,7 @@ const Home = () => {
       </div>
       <p className="font-bold text-primary text-3xl">Miss Myanmar Voting System</p>
       {
-        user?.role !== "admin" && (
+        user?.role == "wpa" && (
           <div className="flex justify-center">
             <ButtonCommon onClick={() => user?.role ? navigate('/category') : navigate('/login')}>Start Vote</ButtonCommon>
           </div>
