@@ -59,6 +59,7 @@ export const createMissService = async (inputs, callback) => {
       callback(undefined);
       break;
     case 'fail':
+      console.log(data)
       callback(data);
       break;
     case 'error':
@@ -66,7 +67,6 @@ export const createMissService = async (inputs, callback) => {
       callback(undefined)
       break;
     default:
-      callback(undefined)
       break;
   }
 }

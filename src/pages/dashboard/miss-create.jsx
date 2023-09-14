@@ -75,12 +75,17 @@ const CreateMiss = () => {
   const handleSubmit = () => {
     setLoading(true)
     const formData = new FormData();
+    if (!image){ 
+      setLoading(false)
+      return setErrors(prev => ({ ...prev, image: ['Please Choose Image'] }))
+    }
     formData.append('data', JSON.stringify(miss))
     formData.append('image', image);
 
     createMissService(formData, (err) => {
-      if (err) setErrors(err);
-      else {
+      if (err) {
+        setErrors(err)
+      } else {
         navigate('/dashboard/misses')
       }
       setLoading(false)
@@ -106,10 +111,13 @@ const CreateMiss = () => {
               <input type="file" className="hidden" id="profile" onChange={handleChange} accept="image/png, image/jpeg" />
             </label>
           ) : (
-            <label htmlFor="profile" className="h-[500px] w-[300px] rounded-lg border border-primary flex justify-center items-center bg-secondary cursor-pointer">
-              <i className="fa-solid fa-image text-2xl text-primary"></i>
-              <input type="file" className="hidden" id="profile" onChange={handleChange} accept="image/png, image/jpeg" />
-            </label>
+            <div className="">
+              <label htmlFor="profile" className="h-[500px] w-[300px] rounded-lg border border-primary flex justify-center items-center bg-secondary cursor-pointer">
+                <i className="fa-solid fa-image text-2xl text-primary"></i>
+                <input type="file" className="hidden" id="profile" onChange={handleChange} accept="image/png, image/jpeg" />
+              </label>
+              {errors?.image && <small className="text-red-600 font-bold">{errors?.image}</small>}
+            </div>
           )}
 
           <div className="flex flex-col justify-between">
